@@ -25,6 +25,29 @@ function university_features(){
 }
 
 
+
+
+
+function university_post_types(){
+
+    register_post_type('event', array(
+        'public'                =>true,
+        'labels'                =>array(
+            'name'              =>'Events',
+            'add_new_item'      =>'Add New Event',
+            'edit_item'         =>'Edit Event',
+            'all_items'         =>'All Events',
+            'singular_name'     =>'Event',
+            'new_item'          =>'Add New Event'
+        ),
+        'menu_icon'             =>'dashicons-calendar',
+        'show_in_rest'          =>true    
+    ));
+}
+
+
+
+add_action('init','university_post_types' );
 add_action('wp_enqueue_scripts','university_files');
 
 add_action('after_setup_theme','university_features');
