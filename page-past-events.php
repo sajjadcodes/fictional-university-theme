@@ -1,16 +1,15 @@
 
 
-
 <?php get_header(); ?>
 
 <div class="page-banner"> 
   <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg');?>)"></div>
     <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title">
-                <?php _e('All Upcoming Events', 'fictional-uni');?>
+                <?php _e('Past Events', 'fictional-uni');?>
         </h1>
         <div class="page-banner__intro">
-          <p>Here are our latest events list</p>
+          <p>Recap Al Past Events</p>
         </div>
     </div>
 </div>
@@ -19,10 +18,24 @@
 <!-- Main sectin -->
 <div class="container container--narrow page-section">
         <?php 
-            
+            $today = date('Ymd');
+            $pastEvents = new WP_Query(array(
+                'paged'             =>get_query_var('paged', 1),
+                'posts_per_page'    =>5,     
+                'post_type'         =>'event',
+                'meta_key'          =>'event_date',
+                'orderby'           =>'meta_value_num',
+                'order'             =>'ASC',
+                'meta_query'        =>array(
+                    'key'           =>'event_date',
+                    'compare'       =>'<',
+                    'value'         =>$today,
+                    'type'          =>'numeric'
+                )
+            ));
 
-            while(have_posts()){
-                    the_post(); ?>
+            while($pastEvents->have_posts()){
+                    $pastEvents->the_post(); ?>
 
                     <div class="event-summary">
                         <a class="event-summary__date t-center" href="<?php the_permalink();?>">
@@ -39,11 +52,13 @@
             }
 
             // echo the_posts_pagination(  );
-            echo paginate_links(  );
+            echo paginate_links( 
+                array(
+                    'total'         =>$pastEvents->max_num_pages
+                )
+             );
         
         ?>
-        <hr class="section-break">
-        <p>Looking for a recap of past events? <a href="<?php echo site_url('/past-events');?>">check out our past Events archive</a></p>
 </div>
 
 
