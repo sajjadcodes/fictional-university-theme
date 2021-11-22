@@ -2,18 +2,24 @@
 
 
 <?php get_header(); ?>
+<?php pageBanner(
+  array(
+    'title'     => 'All Upcoming Events',
+    'subtitle'  =>'Here are our latest events list'
+  )
+); ?>
 
-<div class="page-banner"> 
+<!-- <div class="page-banner"> 
   <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg');?>)"></div>
     <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title">
-                <?php _e('All Upcoming Events', 'fictional-uni');?>
+             
         </h1>
         <div class="page-banner__intro">
           <p>Here are our latest events list</p>
         </div>
     </div>
-</div>
+</div> -->
 
 
 <!-- Main sectin -->
