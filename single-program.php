@@ -27,6 +27,40 @@ while(have_posts()){
             <?php 
 
                     $today = date('Ymd');
+                    $relatedProfessors = new WP_Query(array(
+                    'posts_per_page'      =>-1,
+                    'post_type'           =>'professor',
+              
+                    'orderby'             =>'title',
+                    'order'               =>'ASC',
+                    'meta_query'          =>array(
+                        array(
+                            'key'         =>'related_programs',
+                            'compare'     =>'LIKE',
+                            'value'       => '"' .get_the_ID() .'"' , //solve serialization problem e.g 1200 consider 12 so we need"12"
+                            )
+                    )
+                    ));
+                    if($relatedProfessors->have_posts()){?>
+
+                    <hr class="section-break">
+                    <h2 class="headline headline--medium "> <?php echo get_the_title(); ?> Professors</h2>
+                    <?php 
+
+
+                    while($relatedProfessors->have_posts()){
+                    $relatedProfessors->the_post();
+
+                    ?>
+                    <li><a href="<?php echo get_permalink(); ?>"><?php the_title();?></a></li>
+
+                    <?php 
+
+                    }
+
+                }
+                    wp_reset_postdata(); 
+                    $today = date('Ymd');
                     $homePageEvents = new WP_Query(array(
                     'posts_per_page'      =>2,
                     'post_type'           =>'event',
