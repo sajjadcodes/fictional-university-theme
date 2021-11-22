@@ -1,6 +1,6 @@
 <?php 
 
-function pageBanner($args){
+function pageBanner($args= NULL){
 
         if(!$args['title']){
                 $args['title'] = get_the_title();
@@ -9,7 +9,7 @@ function pageBanner($args){
             $args['subtitle'] = get_field('page_subtitle');
         }
         if(!$args['photo']){
-            if(get_field('page_banner_background')){
+            if(get_field('page_banner_background') AND !is_archive()){
                 
                 $args['photo']  = get_field('page_banner_background')['sizes']['pageBanner'];
 
