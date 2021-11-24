@@ -4053,7 +4053,9 @@ class Search {
     this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
     this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
     this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
+    this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
     this.events();
+    this.isOverlayOpen = false;
   } // 2. events
   //on this head feels cold, wearsHat
   // on this brain feels hot, going swimming
@@ -4061,23 +4063,40 @@ class Search {
 
   events() {
     this.openButton.on("click", this.openOverlay.bind(this));
-    this.closeButton.on("click", this.closeOverlay.bind(this));
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keyup", this.keyPressDispatcher.bind(this));
+    this.closeButton.on("click", this.closeOverlay.bind(this)); // $(document).on("keyup",this.keyPressDispatcher.bind(this));
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keyPressDispatcher.bind(this)); //firing multiple time over and over if you hold down
+
+    this.searchField.on("keydown", this.typingLogic);
   } // 3. Metho(function, actions..)
 
+
+  typingLogic() {
+    // alert("Hello from typing logic");
+    setTimeout(x, 2000); //takes two parameter. first function has to run second the wait time. how much wait before going to run that function
+  }
 
   openOverlay() {
     this.searchOverlay.addClass("search-overlay--active");
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
+    this.isOverlayOpen = true;
   }
 
   closeOverlay() {
     this.searchOverlay.removeClass("search-overlay--active");
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").removeClass("body-no-scroll");
+    this.isOverlayOpen = false;
   }
 
-  keyPressDispatcher() {
-    console.log("this is a test");
+  keyPressDispatcher(e) {
+    // console.log(e.keyCode);
+    if (e.keyCode == 83 && !this.isOverlayOpen) {
+      this.openOverlay();
+    }
+
+    if (e.keyCode == 27 && this.isOverlayOpen) {
+      this.closeOverlay();
+    }
   }
 
 }
