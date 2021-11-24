@@ -27,7 +27,7 @@
        
        <div class="acf-map">
        
-       <?php 
+         <?php 
         
             while(have_posts()){
                     the_post();
@@ -50,7 +50,7 @@
             }
 
             // echo the_posts_pagination(  );
-            echo paginate_links(  );
+           
         
         ?>
         </div>
