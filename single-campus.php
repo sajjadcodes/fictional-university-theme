@@ -42,22 +42,45 @@ while(have_posts()){
       ?>
       </div>
             <?php 
-            
-                $relatePrograms = get_field('related_programs');
-                 if($relatePrograms){
+             
 
-                    echo '<hr  class="section-break">';
-                    echo '<h2 class="headline headline--medium">Related Program(s)</h2>';
-                    echo '<ul class="link-list min-list">';   
-                // print_r($relatePrograms);
-                    foreach($relatePrograms as $program){ ?>
+             $today = date('Ymd');
+             $relatedPrograms = new WP_Query(array(
+             'posts_per_page'      =>-1,
+             'post_type'           =>'program',
+       
+             'orderby'             =>'title',
+             'order'               =>'ASC',
+             'meta_query'          =>array(
+                 array(
+                     'key'         =>'related_campus',
+                     'compare'     =>'LIKE',
+                     'value'       => '"' .get_the_ID() .'"' , //solve serialization problem e.g 1200 consider 12 so we need"12"
+                     )
+             )
+             ));
+             if($relatedPrograms->have_posts()){?>
 
-                    <li><a href="<?php echo get_the_permalink($program);?>"><?php echo get_the_title($program); ?></a></li>
-                    
-                    <?php }
-                    echo "</ul>";  
-                 }
-               
+             <hr class="section-break">
+             <h2 class="headline headline--medium "> <?php echo get_the_title(); ?> Programs</h2>
+             <?php 
+
+             echo'<ul class="min-list link-list">';
+             while($relatedPrograms->have_posts()){
+                $relatedPrograms->the_post();
+
+             ?>
+             <li>
+                 <a  href="<?php echo get_permalink(); ?>"><span><?php the_title();?></span></a>
+                 
+             </li>
+
+             <?php 
+
+             }
+             echo "</ul>";
+
+         }
             ?>
         </div>
  
