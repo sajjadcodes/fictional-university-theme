@@ -4056,6 +4056,7 @@ class Search {
     this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
     this.events();
     this.isOverlayOpen = false;
+    this.typingtimer;
   } // 2. events
   //on this head feels cold, wearsHat
   // on this brain feels hot, going swimming
@@ -4073,7 +4074,10 @@ class Search {
 
   typingLogic() {
     // alert("Hello from typing logic");
-    setTimeout(x, 2000); //takes two parameter. first function has to run second the wait time. how much wait before going to run that function
+    clearTimeout(this.typingtimer);
+    this.typingtimer = setTimeout(function () {
+      alert('this is time out test');
+    }, 2000); //takes two parameter. first function has to run second the wait time. how much wait before going to run that function
   }
 
   openOverlay() {

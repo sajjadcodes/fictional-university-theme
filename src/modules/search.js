@@ -13,6 +13,7 @@ class Search{
         this.searchField= $("#search-term");
         this.events();
         this.isOverlayOpen = false;
+        this.typingtimer;
 
     }
 
@@ -34,8 +35,8 @@ class Search{
     typingLogic(){
 
         // alert("Hello from typing logic");
-
-        setTimeout(x, 2000); //takes two parameter. first function has to run second the wait time. how much wait before going to run that function
+        clearTimeout(this.typingtimer);
+        this.typingtimer =setTimeout(function() { alert('this is time out test');}, 2000); //takes two parameter. first function has to run second the wait time. how much wait before going to run that function
 
     }
 
