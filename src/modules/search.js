@@ -48,10 +48,11 @@ class Search {
       var testArray = ['red', 'orange', 'blue', 'green'];
       this.resultsDiv.html(`
       <h4 class="search-overlay__section-title">General Information</h4>
-      <ul class="link-list min-list">
+      ${posts.length ? '<ul class="link-list min-list">': '<p>No Search Result Found</p>'}
         ${posts.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join(' ')}
-      </ul>
+      ${posts.length ? '</ul>':' '}
       `);
+      this.isSpinnerVisible =false;
     })
   }
 
