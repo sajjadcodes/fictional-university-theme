@@ -4094,14 +4094,16 @@ class Search {
 
   getResults() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(universityData.root_url + "/wp-json/wp/v2/posts?search=" + this.searchField.val(), posts => {
-      var testArray = ['red', 'orange', 'blue', 'green'];
-      this.resultsDiv.html(`
-      <h4 class="search-overlay__section-title">General Information</h4>
-      ${posts.length ? '<ul class="link-list min-list">' : '<p>No Search Result Found</p>'}
-        ${posts.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join(' ')}
-      ${posts.length ? '</ul>' : ' '}
-      `);
-      this.isSpinnerVisible = false;
+      jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(universityData.root_url + "/wp-json/wp/v2/pages?search=" + this.searchField.val(), pages => {
+        var combinedResult = posts.concat(pages);
+        this.resultsDiv.html(`
+        <h4 class="search-overlay__section-title">General Information</h4>
+        ${combinedResult.length ? '<ul class="link-list min-list">' : '<p>No Search Result Found</p>'}
+          ${combinedResult.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join(' ')}
+        ${combinedResult.length ? '</ul>' : ' '}
+        `);
+        this.isSpinnerVisible = false;
+      });
     });
   }
 
@@ -4118,6 +4120,7 @@ class Search {
   openOverlay() {
     this.searchOverlay.addClass("search-overlay--active");
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
+    this.searchField.val('');
     setTimeout(() => this.searchField.focus(), 301);
     console.log("our open method just ran!");
     this.isOverlayOpen = true;
