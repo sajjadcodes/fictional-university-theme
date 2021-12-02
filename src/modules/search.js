@@ -1,73 +1,77 @@
-import $ from 'jquery';
+import $ from "jquery"
 
-class Search{
+class Search {
+  // 1. describe and create/initiate our object
+  constructor() {
+    this.resultsDiv = $("#search-overlay__results")
+    this.openButton = $(".js-search-trigger")
+    this.closeButton = $(".search-overlay__close")
+    this.searchOverlay = $(".search-overlay")
+    this.searchField = $("#search-term")
+    this.events()
+    this.isOverlayOpen = false
+    this.isSpinnerVisible = false
+    this.previousValue
+    this.typingTimer
+  }
 
+  // 2. events
+  events() {
+    this.openButton.on("click", this.openOverlay.bind(this))
+    this.closeButton.on("click", this.closeOverlay.bind(this))
+    $(document).on("keydown", this.keyPressDispatcher.bind(this))
+    this.searchField.on("keyup", this.typingLogic.bind(this))
+  }
 
+  // 3. methods (function, action...)
+  typingLogic() {
+    if (this.searchField.val() != this.previousValue) {
+      clearTimeout(this.typingTimer)
 
-    //1- Describe and create/initiate our object
-    constructor(){
-
-        this.openButton = $(".js-search-trigger");
-        this.closeButton =$(".search-overlay__close");
-        this.searchOverlay =$(".search-overlay");
-        this.searchField= $("#search-term");
-        this.events();
-        this.isOverlayOpen = false;
-        this.typingtimer;
-
-    }
-
-    // 2. events
-    //on this head feels cold, wearsHat
-    // on this brain feels hot, going swimming
-
-    events(){
-                this.openButton.on("click",this.openOverlay.bind(this));
-                this.closeButton.on("click",this.closeOverlay.bind(this));
-                // $(document).on("keyup",this.keyPressDispatcher.bind(this));
-                $(document).on("keydown",this.keyPressDispatcher.bind(this));  //firing multiple time over and over if you hold down
-                this.searchField.on("keydown", this.typingLogic);
-
-    }
-
-    // 3. Metho(function, actions..)
-
-    typingLogic(){
-
-        // alert("Hello from typing logic");
-        clearTimeout(this.typingtimer);
-        this.typingtimer =setTimeout(function() { alert('this is time out test');}, 2000); //takes two parameter. first function has to run second the wait time. how much wait before going to run that function
-
-    }
-
-    openOverlay(){
-            this.searchOverlay.addClass("search-overlay--active");
-            $("body").addClass("body-no-scroll");
-            this.isOverlayOpen = true;
-    }
-
-    closeOverlay(){
-        this.searchOverlay.removeClass("search-overlay--active");
-        $("body").removeClass("body-no-scroll");
-        this.isOverlayOpen= false;
-    }
-
-    keyPressDispatcher(e){
-        // console.log(e.keyCode);
-        if(e.keyCode==83 && !this.isOverlayOpen){
-            this.openOverlay();
+      if (this.searchField.val()) {
+        if (!this.isSpinnerVisible) {
+          this.resultsDiv.html('<div class="spinner-loader"></div>')
+          this.isSpinnerVisible = true
         }
-        if(e.keyCode == 27 && this.isOverlayOpen){
-            this.closeOverlay();
-        }
-        
-
+        this.typingTimer = setTimeout(this.getResults.bind(this), 2000)
+      } else {
+        this.resultsDiv.html("")
+        this.isSpinnerVisible = false
+      }
     }
 
+    this.previousValue = this.searchField.val()
+  }
+
+  getResults() {
+    $.getJSON("/wp-json/wp/v2/posts?search=" + this.searchField.val(), function (posts) {
+      alert(posts[0].title.rendered)
+    })
+  }
+
+  keyPressDispatcher(e) {
+    if (e.keyCode == 83 && !this.isOverlayOpen && !$("input, textarea").is(":focus")) {
+      this.openOverlay()
+    }
+
+    if (e.keyCode == 27 && this.isOverlayOpen) {
+      this.closeOverlay()
+    }
+  }
+
+  openOverlay() {
+    this.searchOverlay.addClass("search-overlay--active")
+    $("body").addClass("body-no-scroll")
+    console.log("our open method just ran!")
+    this.isOverlayOpen = true
+  }
+
+  closeOverlay() {
+    this.searchOverlay.removeClass("search-overlay--active")
+    $("body").removeClass("body-no-scroll")
+    console.log("our close method just ran!")
+    this.isOverlayOpen = false
+  }
 }
 
-
 export default Search
-
-
-// three main area, constrcutor , where describe our object, intiate
