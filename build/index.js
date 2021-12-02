@@ -4050,6 +4050,7 @@ __webpack_require__.r(__webpack_exports__);
 class Search {
   // 1. describe and create/initiate our object
   constructor() {
+    this.addSearchHTML();
     this.resultsDiv = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-overlay__results");
     this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
     this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
@@ -4092,7 +4093,7 @@ class Search {
   }
 
   getResults() {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON("/wp-json/wp/v2/posts?search=" + this.searchField.val(), posts => {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(universityData.root_url + "/wp-json/wp/v2/posts?search=" + this.searchField.val(), posts => {
       var testArray = ['red', 'orange', 'blue', 'green'];
       this.resultsDiv.html(`
       <h4 class="search-overlay__section-title">General Information</h4>
@@ -4126,6 +4127,23 @@ class Search {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").removeClass("body-no-scroll");
     console.log("our close method just ran!");
     this.isOverlayOpen = false;
+  }
+
+  addSearchHTML() {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').append(`
+    <div class="search-overlay">
+                  <div class="search-overlay__top">
+                    <div class="container">
+                      <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>
+                      <input type="text" id="search-term" class="search-term" placeholder="What are you looking fro?">
+                      <i class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>
+                    </div>
+                   <div class="container">
+                     <div id="search-overlay__results"></div>
+                   </div>
+              </div>
+
+    `);
   }
 
 }

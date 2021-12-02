@@ -3,6 +3,7 @@ import $ from "jquery"
 class Search {
   // 1. describe and create/initiate our object
   constructor() {
+    this.addSearchHTML();
     this.resultsDiv = $("#search-overlay__results")
     this.openButton = $(".js-search-trigger")
     this.closeButton = $(".search-overlay__close")
@@ -44,7 +45,7 @@ class Search {
   }
 
   getResults() {
-    $.getJSON("/wp-json/wp/v2/posts?search=" + this.searchField.val(), posts => {
+    $.getJSON(universityData.root_url + "/wp-json/wp/v2/posts?search=" + this.searchField.val(), posts => {
       var testArray = ['red', 'orange', 'blue', 'green'];
       this.resultsDiv.html(`
       <h4 class="search-overlay__section-title">General Information</h4>
@@ -78,6 +79,23 @@ class Search {
     $("body").removeClass("body-no-scroll")
     console.log("our close method just ran!")
     this.isOverlayOpen = false
+  }
+  addSearchHTML(){
+
+    $('body').append(`
+    <div class="search-overlay">
+                  <div class="search-overlay__top">
+                    <div class="container">
+                      <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>
+                      <input type="text" id="search-term" class="search-term" placeholder="What are you looking fro?">
+                      <i class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>
+                    </div>
+                   <div class="container">
+                     <div id="search-overlay__results"></div>
+                   </div>
+              </div>
+
+    `);
   }
 }
 
