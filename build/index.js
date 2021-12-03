@@ -4102,6 +4102,8 @@ class Search {
         ${combinedResult.length ? '</ul>' : ' '}
         `);
       this.isSpinnerVisible = false;
+    }, () => {
+      this.resultsDiv.html("<p>Unexpected Error: Please Try Again</p>");
     });
   }
 
