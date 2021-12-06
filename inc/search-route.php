@@ -18,5 +18,19 @@ function universityRegisterSearch(){
 function universitySearchResults(){
 
 
-    return "Congratulations.! This API route is working..";
+    $porfessors = new WP_Query(array(
+        'post_type'         =>'professor'
+    ));
+
+    $porfessorResults = array();
+
+    while($porfessors->have_posts()){
+        $porfessors->the_post();
+        array_push($porfessorResults, array(
+            'title'         => get_the_title(),
+            'permalink'     =>get_the_permalink()
+        ));
+
+    }
+    return $porfessorResults;
 }
