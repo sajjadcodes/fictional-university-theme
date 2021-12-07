@@ -18,20 +18,64 @@ function universityRegisterSearch(){
 function universitySearchResults($data){
 
 
-    $porfessors = new WP_Query(array(
-        'post_type'         =>'professor',
+    $mainQuery = new WP_Query(array(
+        'post_type'         =>array('post','page','professor','program','campus','event'),
         's'                 =>sanitize_term_field( $data['term'] )
     ));
 
-    $porfessorResults = array();
+    $results = array(
+        'generalInfo'       =>array(),
+        'professors'        =>array(),
+        'programs'          =>array(),
+        'Events'            =>array(),
+        'campuses'          =>array()
 
-    while($porfessors->have_posts()){
-        $porfessors->the_post();
-        array_push($porfessorResults, array(
+    );
+
+    while($mainQuery->have_posts()){
+        $mainQuery->the_post();
+       if(get_post_type()=='post' OR get_post_type() == 'page'){
+
+                array_push($results['generalInfo'], array(
+                    'title'         => get_the_title(),
+                    'permalink'     =>get_the_permalink()
+                ));
+
+       }
+       if(get_post_type()=='professor'){
+
+        array_push($results['professors'], array(
             'title'         => get_the_title(),
             'permalink'     =>get_the_permalink()
         ));
 
+        }
+        if(get_post_type()=='programs'){
+
+            array_push($results['programs'], array(
+                'title'         => get_the_title(),
+                'permalink'     =>get_the_permalink()
+            ));
+    
+            }
+            if(get_post_type()=='Events'){
+
+                array_push($results['Events'], array(
+                    'title'         => get_the_title(),
+                    'permalink'     =>get_the_permalink()
+                ));
+        
+                }
+                if(get_post_type()=='campuses'){
+
+                    array_push($results['campuses'], array(
+                        'title'         => get_the_title(),
+                        'permalink'     =>get_the_permalink()
+                    ));
+            
+                    }
+       
+
     }
-    return $porfessorResults;
+    return $results;
 }
