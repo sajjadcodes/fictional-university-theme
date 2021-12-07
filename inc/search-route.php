@@ -15,11 +15,12 @@ function universityRegisterSearch(){
 }
 
 
-function universitySearchResults(){
+function universitySearchResults($data){
 
 
     $porfessors = new WP_Query(array(
-        'post_type'         =>'professor'
+        'post_type'         =>'professor',
+        's'                 =>sanitize_term_field( $data['term'] )
     ));
 
     $porfessorResults = array();
