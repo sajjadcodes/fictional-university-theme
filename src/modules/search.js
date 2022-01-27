@@ -115,6 +115,8 @@ class Search {
     console.log("our close method just ran!")
     this.isOverlayOpen = false
   }
+
+  // adding HTML at the end of the body.
   addSearchHTML(){
 
     $('body').append(`
