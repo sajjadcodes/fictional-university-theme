@@ -7,6 +7,7 @@ require get_theme_file_path('/inc/search-route.php');
 
 
 function university_custom_rest(){
+    // creating custom field for rest API. Here authorName is created.
     register_rest_field('post','authorName',array(
         'get_callback'  => function() { return get_author_name();}
     ));
