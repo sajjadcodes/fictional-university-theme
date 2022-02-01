@@ -1,6 +1,8 @@
 import $ from "jquery"
 
 class Search {
+
+
   // 1. describe and create/initiate our object
   constructor() {
     this.addSearchHTML();
@@ -45,48 +47,57 @@ class Search {
   }
 
   getResults() {
+    // $.getJSON('http://fictional-university.local/wp-json/wp/v2/posts?search=wordpress', (resultData) =>{
 
-    $.getJSON(universityData.root_url + "/wp-json/university/v1/search?term=" + this.searchField.val(),(results) =>{
+    //     alert(resultData[0].title.rendered);
+    //     alert("This is");
+    // });
 
-        this.resultsDiv.html(`
-          <div class="row">
-                <div class="one-third">
-                    <h2>General Information</h2>
-                </div>
-                <div class="one-third">
-                  <h2 class="search-overlay__section-title">Programs</h2>
-                  ${results.generalInfo.length ? '<ul class="link-list min-list">': '<p>No Search Result Found</p>'}
-                  ${results.generalInfo.map(item => `<li><a href="${item.link}">${item.title.rendered}</a> ${item.type=='post' ? ` by ${item.authorName}`: ' '}</li>`).join(' ')}
-                ${results.length ? '</ul>':' '}
-                  <h2 class="search-overlay__section-title">Professors</h2>
-                </div>
-                <div class="one-third">
-                    <h2 class="search-overlay__section-title">Campuses</h2>
+ 
+      alert(universityData.root_url);
 
-                    <h2 class="search-overlay__section-title">Events</h2>
-                </div>
-          </div>
-        `);
-    }
+  //   $.getJSON(universityData.root_url + "/wp-json/wp/v2/posts?search=" + this.searchField.val()  ,(results) =>{
+  //     alert("working");
+  //     this.resultsDiv.html(`
+  //       <div class="row">
+  //             <div class="one-third">
+  //                 <h2>General Information</h2>
+  //             </div>
+  //             <div class="one-third">
+  //               <h2 class="search-overlay__section-title">Programs</h2>
+  //               ${results.length ? '<ul class="link-list min-list">': '<p>No Search Result Found</p>'}
+  //               ${results.generalInfo.map(item => `<li><a href="${item.link}">${item.title.rendered}</a> ${item.type=='post' ? ` by ${item.authorName}`: ' '}</li>`).join(' ')}
+  //             ${results.length ? '</ul>':' '}
+  //               <h2 class="search-overlay__section-title">Professors</h2>
+  //             </div>
+  //             <div class="one-third">
+  //                 <h2 class="search-overlay__section-title">Campuses</h2>
+
+  //                 <h2 class="search-overlay__section-title">Events</h2>
+  //             </div>
+  //       </div>
+  //     `);
+  // }
+
     
-    );
+  //   );
 
 
     // using building API
-    // $.when(
-    //   $.getJSON(universityData.root_url + "/wp-json/wp/v2/posts?search=" + this.searchField.val()),
-    //   $.getJSON(universityData.root_url + "/wp-json/wp/v2/pages?search=" + this.searchField.val())
-    //   ).then((posts,pages)=>{
-    //   var combinedResult = posts[0].concat(pages[0]);
-    //     this.resultsDiv.html(`
-    //     <h4 class="search-overlay__section-title">General Information</h4>
-    //     ${combinedResult.length ? '<ul class="link-list min-list">': '<p>No Search Result Found</p>'}
-    //       ${combinedResult.map(item => `<li><a href="${item.link}">${item.title.rendered}</a> ${item.type=='post' ? ` by ${item.authorName}`: ' '}</li>`).join(' ')}
-    //     ${combinedResult.length ? '</ul>':' '}
-    //     `);
-    //     this.isSpinnerVisible =false;
+    $.when(
+      $.getJSON(universityData.root_url + "/wp-json/wp/v2/posts?search=" + this.searchField.val()),
+      $.getJSON(universityData.root_url + "/wp-json/wp/v2/pages?search=" + this.searchField.val())
+      ).then((posts,pages)=>{
+      var combinedResult = posts[0].concat(pages[0]);
+        this.resultsDiv.html(`
+        <h4 class="search-overlay__section-title">General Information</h4>
+        ${combinedResult.length ? '<ul class="link-list min-list">': '<p>No Search Result Found</p>'}
+          ${combinedResult.map(item => `<li><a href="${item.link}">${item.title.rendered}</a> ${item.type=='post' ? ` by ${item.authorName}`: ' '}</li>`).join(' ')}
+        ${combinedResult.length ? '</ul>':' '}
+        `);
+        this.isSpinnerVisible =false;
 
-    // }, ()=>{ this.resultsDiv.html("<p>Unexpected Error: Please Try Again</p>")});
+    }, ()=>{ this.resultsDiv.html("<p>Unexpected Error: Please Try Again</p>")});
   
   }
 
@@ -134,6 +145,8 @@ class Search {
 
     `);
   }
+
+
 }
 
 export default Search
