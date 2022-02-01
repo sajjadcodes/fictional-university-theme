@@ -17,11 +17,35 @@ function universityRegisterSearch(){
 
 function universitySearchResults($data){
 
+    // return "Congratulation API Route is working";
 
+    // return array('red', 'orange','yellow');
+
+    // return array(
+    //     'name'  => "university",
+    //     "id"    => 21
+    // );
+  
     $mainQuery = new WP_Query(array(
-        'post_type'         =>array('post','page','professor','program','campus','event'),
-        's'                 =>sanitize_term_field( $data['term'] )
+        'post_type'         =>array('post', 'page','professar','event','program','campus'),
+        's'                 =>$data['term'] 
     ));
+
+    // return $mainQuery->posts;
+
+    // $postResults = array();
+
+
+    // while($mainQuery->have_posts()){
+    //     $mainQuery->the_post();
+    //     array_push($postResults, array(
+    //         'title'           => get_the_title(),
+    //         'permalink'       => get_the_permalink()  
+    //     ));
+     
+
+    // }
+    // return $postResults;
 
     $results = array(
         'generalInfo'       =>array(),
@@ -36,9 +60,10 @@ function universitySearchResults($data){
         $mainQuery->the_post();
        if(get_post_type()=='post' OR get_post_type() == 'page'){
 
-                array_push($results['generalInfo'], array(
+                array_push($results['campuses'], array(
                     'title'         => get_the_title(),
-                    'permalink'     =>get_the_permalink()
+                    'permalink'     =>get_the_permalink(),
+                    'PostType'      => get_post_type()
                 ));
 
        }
@@ -50,7 +75,7 @@ function universitySearchResults($data){
         ));
 
         }
-        if(get_post_type()=='programs'){
+        if(get_post_type()=='program'){
 
             array_push($results['programs'], array(
                 'title'         => get_the_title(),
@@ -58,7 +83,7 @@ function universitySearchResults($data){
             ));
     
             }
-            if(get_post_type()=='Events'){
+            if(get_post_type()=='Event'){
 
                 array_push($results['Events'], array(
                     'title'         => get_the_title(),
@@ -66,7 +91,7 @@ function universitySearchResults($data){
                 ));
         
                 }
-                if(get_post_type()=='campuses'){
+                if(get_post_type()=='campus'){
 
                     array_push($results['campuses'], array(
                         'title'         => get_the_title(),
