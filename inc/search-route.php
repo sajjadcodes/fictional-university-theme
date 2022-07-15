@@ -8,7 +8,6 @@ function universityRegisterSearch(){
     ) );
 }
 
-
 function universitySearchResults($data){
 
     // return "Congratulation API Route is working";
